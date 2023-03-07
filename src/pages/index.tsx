@@ -5,7 +5,12 @@ import axios from 'axios';
 interface Todo {
   id: number;
   name: string;
-  // completed: boolean
+  card_images: cardImages[];
+}
+
+interface cardImages {
+  id: number;
+  image_url: string;
 }
 
 interface Props {
@@ -25,7 +30,7 @@ const Home = ({ todos }: Props) => {
 }
 
 Home.getInitialProps = async () => {
-  const response = await axios.get("https://db.ygoprodeck.com/api/v7/cardinfo.php?staple=yes");
+  const response = await axios.get("https://db.ygoprodeck.com/api/v7/cardinfo.php?archetype=Blue-Eyes");
   const data = response.data.data;
   const todos =  data.slice(0, 20);
 

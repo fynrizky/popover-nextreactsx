@@ -4,7 +4,7 @@ interface Todo {
   id: number;
   name: string;
   // completed: boolean;
-  card_images?: cardImages[]
+  card_images: cardImages[]
 }
 
 interface cardImages {
@@ -48,7 +48,7 @@ const PageMenu = ({ todos }: Props) => {
             {todos.map(todo => (
             <div key={todo.id} style={{cursor:"pointer"}} onClick={() => handleTodoClick(todo)}>
               <div >
-                {todo.card_images?.map(card => (
+                {todo.card_images.map(card => (
                   <img key={card.id} width="80px" src={card.image_url} alt="" />
                 ))}
               </div>
@@ -78,11 +78,10 @@ const PageMenu = ({ todos }: Props) => {
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "#FFFFFF",
-              borderRadius: "10px"
-              
+              borderRadius: "10px",
             }}>
               <h2>{selectedTodo.name}</h2>
-                {selectedTodo.card_images?.map(card => (
+                {selectedTodo.card_images.map(card => (
                   <img src={card.image_url} width="180px" alt="" />
                   ))}
                 <button onClick={handleCloseClick}>Close</button>
