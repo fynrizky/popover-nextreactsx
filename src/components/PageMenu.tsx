@@ -33,10 +33,10 @@ const PageMenu = ({ todos }: Props) => {
 
   return (
     <div>
-      <div style={{paddingLeft: "30px", paddingTop:"30px"}}>
+      <div style={{paddingLeft: "18px", paddingTop:"30px", filter: selectedTodo ? "blur(8px)" : ""}}>
           <h1>STAPLE YUGIOH</h1>
       </div>
-    <div style={{position: "relative",display: "flex"
+    <div style={{position: "relative",display: "flex", filter: selectedTodo ? "blur(8px)" : "",
     }}>
         <div style={{
           display: "grid",
@@ -73,7 +73,7 @@ const PageMenu = ({ todos }: Props) => {
               <div style={{position: "absolute",
               top: "50%",
               left: "50%",
-              padding: "30px",
+              padding: "24px",
               transform: "translate(-50%, -50%)",
               justifyContent: "center",
               alignItems: "center",
@@ -81,13 +81,14 @@ const PageMenu = ({ todos }: Props) => {
               borderRadius: "10px",
               height: selectedTodo.card_images.length > 1 ? "50vh" : "",
               overflow: selectedTodo.card_images.length > 1 ? "auto" : "",
+              zIndex: "1"
             }}>
               <h2>{selectedTodo.name}</h2>
                 {selectedTodo.card_images.map(card => (
                   <img src={card.image_url} width="200px" alt="" />
                   ))}
                 <button onClick={handleCloseClick}>Close</button>
-              </div>
+            </div>
             
             </div>
         </div>
