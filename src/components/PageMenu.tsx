@@ -21,6 +21,7 @@ const PageMenu = ({ todos }: Props) => {
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [selectedTodoIndex, setSelectedTodoIndex] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [cardTransition, setCardTransition] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(()=> {
@@ -42,9 +43,14 @@ const PageMenu = ({ todos }: Props) => {
       setSelectedTodoIndex(0);
     };
 
+
   const handleTodoClick = (todo: Todo) => {
     setSelectedTodo(todo);
     setSelectedTodoIndex(0);
+    setCardTransition(false);
+    setTimeout(()=> {
+      setCardTransition(true);
+    },500)
   }
 
   const handleNextClick = () => {
@@ -131,15 +137,17 @@ const PageMenu = ({ todos }: Props) => {
                 left: "50%",
             }}
             ref={ref}>
-              <div style={{position: "absolute",
+            <div style={{position: "absolute",
               top: "50%",
               left: "50%",
               padding: "18px",
-              transform: "translate(-50%, -50%)",
+              transform:  `translate(-50%, ${cardTransition ? "-50%" : "-180%"})`,
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "rgb(999,999,999,0.5)",
+              transition: "opacity 1.2s ease-in-out, transform 0.8s ease-in-out",
               borderRadius: "10px",
+              opacity: cardTransition ? '1' : '0'
               // height: selectedTodo.card_images.length > 1 ? "50vh" : "",
               // overflow: selectedTodo.card_images.length > 1 ? "auto" : "",
             }}>
@@ -195,8 +203,6 @@ const PageMenu = ({ todos }: Props) => {
                   )}
                 </div>
               </div>
-
-              
             </div>
             
             </div>
