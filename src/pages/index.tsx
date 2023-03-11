@@ -25,8 +25,10 @@ const Home = ({ todos }: Props) => {
   }
 
   return (
-    <div style={{ backgroundColor: '#FFFFFF', position: 'relative', margin: '0 35%', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: '#C8C8C8', display:'flex', justifyContent:'center', alignItems:'center', }}>
+    <div style={{ backgroundColor: '#FFFFFF', position:'relative', maxWidth:'65vh', minWidth: '45vh', minHeight: '100vh'}}>
       <PageMenu todos={todos} />
+    </div>   
     </div>   
   )
 }

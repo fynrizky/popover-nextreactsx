@@ -54,7 +54,9 @@ const PageMenu = ({ todos }: Props) => {
   }
 
   const handleNextClick = () => {
+    // data array (4 data) => [1,2,3,4] - 1 = //[0,1,2,3] => data array length
     if (selectedTodo && selectedTodoIndex < selectedTodo.card_images.length - 1) {
+      // set selectedTodo = 0 < Data Array length => selectedTodoIndex +1 every handlenextClick clicked
       setSelectedTodoIndex(selectedTodoIndex + 1);
     }
   }
@@ -87,15 +89,16 @@ const PageMenu = ({ todos }: Props) => {
   return (
     <div>
       <div style={{padding:"12px", filter: selectedTodo ? "blur(8px)" : ""}}>
-          <h1>STAPLE YUGIOH</h1>
+          <h1>Yugioh Cards</h1>
       </div>
       <form onSubmit={(event) => handleSearch(event)} style={{display: 'flex', margin: '14px',filter: selectedTodo ? "blur(8px)" : "",
       }} className="flex my-4 w-full">
         <input type="text" id="searchTerm" 
         className='border border-grey-300 rounded bg-gray-900 text-slate-300 py-2 px-2 mr-2 flex-grow'  
         style={{border:'6px', borderRadius: '8px', background: 'rgb(200,200,200,0.5)', color: '#111', 
-        padding: '2px', marginRight:'2px', width: '100vh'}}
-        placeholder="Search..." />
+        padding: '8px', marginRight:'2px', width: '100vh'}}
+        placeholder="Search..." 
+        autoComplete='off' />
         <button type="submit" 
         className='bg-gray-500 hover:bg-gray-600 text-slate-300 font-bold py-2 px-4 rounded'
         style={{backgroundColor: 'grey', fontSize: 'bold', padding: '4px', borderRadius: '8px'}}>Search</button>
@@ -108,14 +111,14 @@ const PageMenu = ({ todos }: Props) => {
           gridTemplateColumns: "repeat(4, 1fr)", // divide into 3 columns
           gap: "20px",
           position:"relative",
-          padding: "18px",
+          padding: "14px",
           backgroundColor: 'rgb(100, 100, 100, 0.2)',
           borderStyle: 'double',
           }}>
             {filteredData.map((todo, i) => (
             <div key={todo.id} style={{cursor:"pointer"}} onClick={() => handleTodoClick(todo)}>
               <div >
-                  <img width="80px" src={todo.card_images[0].image_url} alt="" />
+                  <img width="70px" src={todo.card_images[0].image_url} alt="" />
               </div>
             </div>
             ))}
@@ -140,7 +143,7 @@ const PageMenu = ({ todos }: Props) => {
             <div style={{position: "absolute",
               top: "50%",
               left: "50%",
-              padding: "18px",
+              padding: "14px",
               transform:  `translate(-50%, ${cardTransition ? "-50%" : "-180%"})`,
               justifyContent: "center",
               alignItems: "center",
@@ -162,13 +165,13 @@ const PageMenu = ({ todos }: Props) => {
                   {selectedTodo.card_images.length > 1 && (
                     <button 
                       style={{
-                        padding: '10px', 
+                        padding: '8px', 
                         border: 'none', 
                         backgroundColor: selectedTodoIndex === 0 ? 
                         'rgb(910,910,910,0.1)' :
                         'rgb(900,900,900,0.3)',  
                         color:'white',
-                        fontSize:'16px', 
+                        fontSize:'24px', 
                         borderRadius: '5px', 
                         cursor:'pointer',
                         margin: '5px'
@@ -176,7 +179,7 @@ const PageMenu = ({ todos }: Props) => {
                       onClick={handlePrevClick} 
                       disabled={selectedTodoIndex === 0}
                     >
-                      &lt;
+                      &laquo;
                     </button>
                   )}
                   {selectedTodo.card_images[selectedTodoIndex] && (
@@ -190,7 +193,7 @@ const PageMenu = ({ todos }: Props) => {
                         backgroundColor: selectedTodoIndex === selectedTodo.card_images.length - 1 ? 'rgb(910,910,910,0.1)' : 
                         'rgb(900,900,900,0.3)', 
                         color:'white',
-                        fontSize:'16px', 
+                        fontSize:'24px', 
                         borderRadius: '5px', 
                         cursor:'pointer',
                         margin: '5px'
@@ -198,7 +201,7 @@ const PageMenu = ({ todos }: Props) => {
                       onClick={handleNextClick} 
                       disabled={selectedTodoIndex === selectedTodo.card_images.length - 1}
                     >
-                      &gt;
+                      &raquo;
                     </button>
                   )}
                 </div>
