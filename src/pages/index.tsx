@@ -5,6 +5,8 @@ import axios from 'axios';
 interface Todo {
   id: number;
   name: string;
+  type: string;
+  desc: string;
   card_images: cardImages[];
 }
 
@@ -32,7 +34,7 @@ const Home = ({ todos }: Props) => {
 Home.getInitialProps = async () => {
   const response = await axios.get(`https://db.ygoprodeck.com/api/v7/cardinfo.php?staple=yes`);
   const data = response.data.data;
-  const todos =  data.slice(0, 20);
+  const todos =  data.slice(0, 100);
 
   return {
       todos,

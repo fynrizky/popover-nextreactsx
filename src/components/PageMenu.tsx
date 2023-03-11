@@ -3,7 +3,8 @@ import React, { useState, useRef, useEffect } from 'react'
 interface Todo {
   id: number;
   name: string;
-  // completed: boolean;
+  type: string;
+  desc: string;
   card_images: cardImages[]
 }
 
@@ -19,6 +20,7 @@ interface Props {
 const PageMenu = ({ todos }: Props) => {
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [selectedTodoIndex, setSelectedTodoIndex] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(()=> {
@@ -50,6 +52,20 @@ const PageMenu = ({ todos }: Props) => {
       setSelectedTodoIndex(selectedTodoIndex + 1);
     }
   }
+
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // cara2
+    setSearchTerm(event.currentTarget.searchTerm.value);
+    // setCurrentPage(1);
+  };
+
+
+  const filteredData = todos && todos.filter((item) => {
+    return item.name.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+           item.type.toLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+           item.desc.toLowerCase().includes(searchTerm.toLocaleLowerCase()) 
+  })
   
   const handlePrevClick = () => {
     if (selectedTodo && selectedTodoIndex > 0) {
@@ -67,8 +83,20 @@ const PageMenu = ({ todos }: Props) => {
       <div style={{padding:"12px", filter: selectedTodo ? "blur(8px)" : ""}}>
           <h1>STAPLE YUGIOH</h1>
       </div>
-    <div style={{position: "relative",display: "flex", justifyContent: 'center', padding: '18px', filter: selectedTodo ? "blur(8px)" : "",
+      <form onSubmit={(event) => handleSearch(event)} style={{display: 'flex', margin: '14px',filter: selectedTodo ? "blur(8px)" : "",
+      }} className="flex my-4 w-full">
+        <input type="text" id="searchTerm" 
+        className='border border-grey-300 rounded bg-gray-900 text-slate-300 py-2 px-2 mr-2 flex-grow'  
+        style={{border:'6px', borderRadius: '8px', background: 'rgb(200,200,200,0.5)', color: '#111', 
+        padding: '2px', marginRight:'2px', width: '100vh'}}
+        placeholder="Search..." />
+        <button type="submit" 
+        className='bg-gray-500 hover:bg-gray-600 text-slate-300 font-bold py-2 px-4 rounded'
+        style={{backgroundColor: 'grey', fontSize: 'bold', padding: '4px', borderRadius: '8px'}}>Search</button>
+      </form>
+    <div style={{position: "relative",display: "flex", justifyContent: 'center', padding: '4px', filter: selectedTodo ? "blur(8px)" : "",
     }}>
+      {filteredData && filteredData.length > 0 && (
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)", // divide into 3 columns
@@ -76,9 +104,9 @@ const PageMenu = ({ todos }: Props) => {
           position:"relative",
           padding: "18px",
           backgroundColor: 'rgb(100, 100, 100, 0.2)',
-          borderStyle: 'double'
+          borderStyle: 'double',
           }}>
-            {todos.map((todo, i) => (
+            {filteredData.map((todo, i) => (
             <div key={todo.id} style={{cursor:"pointer"}} onClick={() => handleTodoClick(todo)}>
               <div >
                   <img width="80px" src={todo.card_images[0].image_url} alt="" />
@@ -86,6 +114,7 @@ const PageMenu = ({ todos }: Props) => {
             </div>
             ))}
         </div>
+    )}
     </div>
       {selectedTodo && (
         <div style={{
