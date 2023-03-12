@@ -33,15 +33,13 @@ const Home = ({ todos }: Props) => {
   )
 }
 
-export const getServerSideProps = async () => {
+Home.getInitialProps = async () => {
   const response = await axios.get(`https://db.ygoprodeck.com/api/v7/cardinfo.php`);
   const data = await response.data;
   const todos = data.data.slice(0, 12551);
 
   return {
-    props:{
      todos,
-    }
   }
 }
 
