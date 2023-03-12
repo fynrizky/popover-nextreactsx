@@ -35,8 +35,8 @@ const Home = ({ todos }: Props) => {
 
 Home.getInitialProps = async () => {
   const response = await axios.get(`https://db.ygoprodeck.com/api/v7/cardinfo.php`);
-  const data = await response.data;
-  const todos = data.data.slice(0, 12551);
+  const data = response.data.data;
+  const todos = data.slice(0, 12551);
 
   return {
      todos,
