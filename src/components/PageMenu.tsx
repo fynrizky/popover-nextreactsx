@@ -95,7 +95,7 @@ const PageMenu = ({ todos }: Props) => {
       }} className="flex my-4 w-full">
         <input type="text" id="searchTerm" 
         className='border border-grey-300 rounded bg-gray-900 text-slate-300 py-2 px-2 mr-2 flex-grow'  
-        style={{border:'6px', borderRadius: '8px', background: 'rgb(200,200,200,0.5)', color: '#111', 
+        style={{border:'6px', borderRadius: '8px', background: 'rgb(200,200,200,0.2)', color: '#111', 
         padding: '8px', marginRight:'2px', width: '100vh'}}
         placeholder="Search..." 
         autoComplete='off' />
@@ -104,17 +104,20 @@ const PageMenu = ({ todos }: Props) => {
         style={{backgroundColor: 'grey', fontSize: 'bold', padding: '4px', borderRadius: '8px'}}>Search</button> */}
       </form>
     <div style={{position: "relative",display: "flex", 
-    justifyContent: 'center', padding: '8px', filter: selectedTodo ? "blur(8px)" : "",
+    justifyContent: 'center', marginTop: '-14px', filter: selectedTodo ? "blur(8px)" : "",
     }}>
       {searchTerm && filteredData && filteredData.length > 0  && (
         <div style={{
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)", // divide into 3 columns
-          gap: "20px",
+          gap: "18px",
           position:"relative",
           padding: "8px",
           backgroundColor: 'rgb(100, 100, 100, 0.2)',
-          borderStyle: 'double',
+          borderBottomStyle: 'ridge',
+          borderRightStyle: 'ridge',
+          borderLeftStyle: 'ridge',
+          borderTopStyle: 'none',
           height:  "58vh",
           overflow: "auto",
        
