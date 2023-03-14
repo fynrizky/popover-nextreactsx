@@ -83,12 +83,17 @@ const PageMenu = ({ todos }: Props) => {
   }
 
  
-  const cardsPerPage = 12;
+  const cardsPerPage: number = 12;
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   // console.log(indexOfFirstCard);
   const currentCards = filteredData && filteredData.slice(indexOfFirstCard, indexOfLastCard);
   //sort atau urutkan
+  currentCards?.sort((a, b) => {
+    if (a.type < b.type) return -1;
+    if (a.type > b.type) return 1;
+    return 0;
+  });
   // Mengurutkan data berdasarkan nilai properti "type"
   const dataCards = currentCards?.map(card => card.type);
   // console.log(dataCards)
@@ -297,7 +302,7 @@ const PageMenu = ({ todos }: Props) => {
                     </button>
                   )}
                   {selectedTodo.card_images[selectedTodoIndex] && (
-                    <img src={selectedTodo.card_images[selectedTodoIndex].image_url} width="270px" alt="" />
+                    <img src={selectedTodo.card_images[selectedTodoIndex].image_url} width="240px" alt="" />
                   )}
                   {selectedTodo.card_images.length > 1 && (
                     <button 
