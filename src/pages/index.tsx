@@ -1,6 +1,7 @@
 import React from 'react';
 import PageMenu from '@/components/PageMenu';
 import axios from 'axios';
+import { GetServerSideProps } from 'next';
 
 interface Todo {
   id: number;
@@ -15,9 +16,24 @@ interface cardImages {
   image_url: string;
 }
 
-interface Props {
+type Props = {
   todos?: Todo[];
 }
+
+//get data s
+export const getServerSideProps: GetServerSideProps<{todos : Props}> = async() => {
+  
+  const response = await axios.get(`${process.env.YGOPRODECK_API as string}`);
+  const data = await response.data.data;
+  const todos = data.slice(0, 12551);
+
+  return {
+    props: {
+      todos,
+    }
+  }
+}
+
 
 const Home = ({ todos }: Props) => {
   if (!todos) {
@@ -31,18 +47,6 @@ const Home = ({ todos }: Props) => {
     </div>   
     </div>   
   )
-}
-//get data s
-export const getServerSideProps = async() => {
-  const response = await axios.get(`https://db.ygoprodeck.com/api/v7/cardinfo.php`);
-  const data = response.data.data;
-  const todos = data.slice(0, 12551);
-
-  return {
-    props: {
-      todos,
-    }
-  }
 }
 
 export default Home;

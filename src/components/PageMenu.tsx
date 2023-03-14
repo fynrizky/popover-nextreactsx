@@ -302,7 +302,7 @@ const PageMenu = ({ todos }: Props) => {
                     </button>
                   )}
                   {selectedTodo.card_images[selectedTodoIndex] && (
-                    <img src={selectedTodo.card_images[selectedTodoIndex].image_url} width="240px" alt="" />
+                    <img src={selectedTodo.card_images[selectedTodoIndex].image_url} width="270px" alt="" />
                   )}
                   {selectedTodo.card_images.length > 1 && (
                     <button 
