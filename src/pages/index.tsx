@@ -32,7 +32,7 @@ const Home = ({ todos }: Props) => {
     </div>   
   )
 }
-
+//get data
 export const getServerSideProps = async() => {
   const response = await axios.get(`https://db.ygoprodeck.com/api/v7/cardinfo.php`);
   const data = response.data.data;
