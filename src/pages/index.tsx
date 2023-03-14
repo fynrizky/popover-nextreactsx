@@ -22,8 +22,10 @@ type Props = {
 
 //get data s
 export const getServerSideProps: GetServerSideProps<{todos : Props}> = async() => {
-  
-  const response = await axios.get(`${process.env.YGOPRODECK_API as string}`);
+ //tanda (!) berarti nilainya pasti ada
+ // tanda as string berarti diasumsikan string
+ // tanda ?? artinya default artinya ada atau undefined 
+  const response = await axios.get(`${process.env.YGOPRODECK_API!}`);
   const data = await response.data.data;
   const todos = data.slice(0, 12551);
 
