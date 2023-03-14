@@ -22,6 +22,7 @@ const PageMenu = ({ todos }: Props) => {
   const [selectedTodoIndex, setSelectedTodoIndex] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [cardTransition, setCardTransition] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(()=> {
@@ -65,7 +66,7 @@ const PageMenu = ({ todos }: Props) => {
     event.preventDefault();
     // cara2
     setSearchTerm(event.currentTarget.searchTerm.value);
-    // setCurrentPage(1);
+    setCurrentPage(1);
   };
 
 
@@ -80,6 +81,65 @@ const PageMenu = ({ todos }: Props) => {
       setSelectedTodoIndex(selectedTodoIndex - 1);
     }
   }
+
+ 
+  const cardsPerPage = 12;
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  // console.log(indexOfFirstCard);
+  const currentCards = filteredData && filteredData.slice(indexOfFirstCard, indexOfLastCard);
+  //sort atau urutkan
+  // Mengurutkan data berdasarkan nilai properti "type"
+  const dataCards = currentCards?.map(card => card.type);
+  // console.log(dataCards)
+  
+  const totalPages: any = filteredData && Math.ceil(filteredData.length / cardsPerPage);
+
+ 
+  const getPageNumbers = () => {
+    const maxPageNumbers = 3;
+    const pageNumbers: number[] = [];
+    let startPage = 1;
+    let endPage: any = totalPages;
+  
+    if (totalPages && totalPages > maxPageNumbers) {
+      const middlePage = Math.ceil(maxPageNumbers / 2);
+      if (currentPage > middlePage) {
+        startPage = currentPage - (middlePage - 1);
+        endPage = currentPage + (maxPageNumbers - middlePage);
+        if (endPage > totalPages && totalPages) {
+          endPage = totalPages;
+          startPage = totalPages - maxPageNumbers + 1;
+        }
+      } else {
+        endPage = maxPageNumbers;
+      }
+    }
+  
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+  
+    return pageNumbers;
+  };
+
+  
+     // Pagination
+     const handleCLickPage = (pageNumber: number) =>{
+      setCurrentPage(pageNumber)
+  }
+
+  const handlePrevPageClick = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  
+  const handleNextPageClick = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
 
   if (!todos) {
@@ -103,35 +163,82 @@ const PageMenu = ({ todos }: Props) => {
         className='bg-gray-500 hover:bg-gray-600 text-slate-300 font-bold py-2 px-4 rounded'
         style={{backgroundColor: 'grey', fontSize: 'bold', padding: '4px', borderRadius: '8px'}}>Search</button> */}
       </form>
-    <div style={{position: "relative",display: "flex", 
-    justifyContent: 'center', marginTop: '-14px', filter: selectedTodo ? "blur(8px)" : "",
+      
+    <div style={{
+      position:'relative', 
+      paddingLeft:'20px', 
+      paddingRight:'20px',
+      justifyContent: 'center', 
+      marginTop: '-14px', 
+      filter: selectedTodo ? "blur(8px)" : "",
     }}>
-      {searchTerm && filteredData && filteredData.length > 0  && (
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)", // divide into 3 columns
-          gap: "18px",
-          position:"relative",
-          padding: "8px",
-          backgroundColor: 'rgb(100, 100, 100, 0.2)',
-          borderBottomStyle: 'ridge',
-          borderRightStyle: 'ridge',
-          borderLeftStyle: 'ridge',
-          borderTopStyle: 'none',
-          height:  "58vh",
-          overflow: "auto",
-       
-          }}>
-            {filteredData.map((todo, i) => (
-            <div key={todo.id} style={{cursor:"pointer"}} onClick={() => handleTodoClick(todo)}>
-              <div >
-                  <img width="70px" src={todo.card_images[0].image_url} alt="" />
-              </div>
-            </div>
-            ))}
-        </div>
+      {searchTerm && dataCards && filteredData && filteredData.length > 0  && (
+        <>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)", // divide into 3 columns
+            gap: "2px",
+            position:"relative",
+            padding: "4px",
+            backgroundColor: 'rgb(100, 100, 100, 0.2)',
+            borderBottomStyle: 'ridge',
+            borderRightStyle: 'ridge',
+            borderLeftStyle: 'ridge',
+            borderTopStyle: 'none',
+            overflow: "auto",
+        
+            }}>
+              
+              {currentCards && currentCards.map((todo, i) => (
+              <>
+                <div key={todo.id} style={{cursor:"pointer", display:'flex', justifyContent:'center', alignItems:'center'}} onClick={() => handleTodoClick(todo)}>
+                  <div >
+                      <img width="70px" src={todo.card_images[0].image_url} alt="" />
+                  </div>
+                </div>  
+              </>
+              ))}
+          </div>
+          <div style={{display:'flex', paddingTop: '2px'}}>
+                  {filteredData && filteredData.length > cardsPerPage && (
+                    <>
+                    <button
+                     className={``}
+                     style={{marginRight: '2px'}}
+                     onClick={handlePrevPageClick}
+                   >
+                     Prev
+                   </button>
+                    {getPageNumbers().map(pageNumber => {
+                      return(
+                        <button
+                          key={pageNumber}
+                          style={{
+                            pointerEvents: currentPage === pageNumber ? 'none':'fill',
+                            opacity: currentPage === pageNumber ? '0.5':'',
+                            marginLeft: '2px', 
+                            marginRight:'2px', 
+                            padding: '6px',
+                            borderRadius: 'rounded'}}
+                          onClick={() => handleCLickPage(pageNumber)}
+                        >
+                          {pageNumber}
+                        </button>
+                      )
+                    })}
+                    <button
+                    className={``}
+                    style={{marginLeft: '2px'}}
+                    onClick={handleNextPageClick}
+                  >
+                    Next
+                  </button>
+                  </>
+                  )}
+                </div>
+        </>
     )}
-    </div>
+    </div>  
       {selectedTodo && (
         <div style={{
             position: "absolute",
