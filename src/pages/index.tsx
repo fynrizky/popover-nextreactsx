@@ -37,6 +37,7 @@ export const getServerSideProps: GetServerSideProps<{todos : Props}> = async() =
 }
 
 
+
 const Home = ({ todos }: Props) => {
   if (!todos) {
     return <div>Loading todos...</div>;
