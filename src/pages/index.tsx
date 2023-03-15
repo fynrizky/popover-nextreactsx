@@ -17,17 +17,20 @@ interface cardImages {
 }
 
 type Props = {
-  todos?: Todo[];
+  todos?: Todo[] | null;
 }
 
 //get data s
-export const getServerSideProps: GetServerSideProps<{todos : Props}> = async() => {
- //tanda (!) berarti nilainya pasti ada
+export const getServerSideProps: GetServerSideProps<Props> = async() => {
+  //tanda (!) berarti nilainya pasti ada
  // tanda as string berarti diasumsikan string
  // tanda ?? artinya default artinya ada atau undefined 
   const response = await axios.get(`${process.env.YGOPRODECK_API!}`);
+  // console.log("response", response)
   const data = await response.data.data;
-  const todos = data.slice(0, 12551);
+  // console.log("data", data)
+  const todos = Array.isArray(data) ? data.slice(0, 12551) as Todo[] : [];
+  // console.log("data", data)
 
   return {
     props: {

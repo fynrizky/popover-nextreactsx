@@ -18,6 +18,7 @@ interface Props {
 }
 
 const PageMenu = ({ todos }: Props) => {
+  const [lazyLoad, setLazyLoad] = useState<boolean>(false);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [selectedTodoIndex, setSelectedTodoIndex] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -98,14 +99,22 @@ const PageMenu = ({ todos }: Props) => {
   const dataCards = currentCards?.map(card => card.type);
   // console.log(dataCards)
   
-  const totalPages: any = filteredData && Math.ceil(filteredData.length / cardsPerPage);
+  // penggunaan tanda seru (!) menandakan bahwa nilai tersebut adlah optional, 
+  // tapi kita yakin nilai tersebut tidak undefined 
+  // dan memberi tahu typescript bahwa nilai tersebut pasti akan ada
+  // artinya nilai tersebut bisa bernilai number | undefined
+  // nilainya bergantung pada filteredData
+  const totalPages: number | undefined = filteredData && Math.ceil(filteredData.length / cardsPerPage);
 
  
   const getPageNumbers = () => {
     const maxPageNumbers = 3;
     const pageNumbers: number[] = [];
     let startPage = 1;
-    let endPage: any = totalPages;
+    // sama halnya dengan endPage yang diberikan type data number | undefined
+    // jika halaman terakhir tidak ditentukan  maka nilainya undefined
+    // karna sudah yakin nilai tersebut ada maka kita berikan tanda seru ! (endPage!)
+    let endPage: number | undefined = totalPages;
   
     if (totalPages && totalPages > maxPageNumbers) {
       const middlePage = Math.ceil(maxPageNumbers / 2);
@@ -121,7 +130,7 @@ const PageMenu = ({ todos }: Props) => {
       }
     }
   
-    for (let i = startPage; i <= endPage; i++) {
+    for (let i = startPage; i <= endPage!; i++) {
       pageNumbers.push(i);
     }
   
@@ -132,17 +141,29 @@ const PageMenu = ({ todos }: Props) => {
      // Pagination
      const handleCLickPage = (pageNumber: number) =>{
       setCurrentPage(pageNumber)
+      setLazyLoad(true);
+      setTimeout(()=>{
+        setLazyLoad(false);
+      },700)
   }
 
   const handlePrevPageClick = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
+      setLazyLoad(true);
+      setTimeout(()=>{
+        setLazyLoad(false);
+      },700)
     }
   };
   
   const handleNextPageClick = () => {
-    if (currentPage < totalPages) {
+    if (currentPage < totalPages!) {
       setCurrentPage(currentPage + 1);
+      setLazyLoad(true);
+      setTimeout(()=>{
+        setLazyLoad(false);
+      },700)
     }
   };
 
@@ -179,11 +200,23 @@ const PageMenu = ({ todos }: Props) => {
     }}>
       {searchTerm && dataCards && filteredData && filteredData.length > 0  && (
         <>
+            
+          <div style={{fontSize: '20px', fontWeight: 'bold', 
+            position:'absolute', 
+            color:'white',
+            top: "40%",
+            left: "50%",
+            transform:  `translate(-50%, -50%)`,
+            zIndex: lazyLoad ? '9999' : '-9999',
+            }}>
+              <p>Loading... </p>
+          </div>
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)", // divide into 3 columns
             gap: "2px",
             position:"relative",
+            // zIndex: '-9999',
             padding: "4px",
             backgroundColor: 'rgb(100, 100, 100, 0.2)',
             borderBottomStyle: 'ridge',
@@ -191,9 +224,10 @@ const PageMenu = ({ todos }: Props) => {
             borderLeftStyle: 'ridge',
             borderTopStyle: 'none',
             overflow: "auto",
+            filter: lazyLoad && lazyLoad ? "blur(8px)" : "",
         
             }}>
-              
+          
               {currentCards && currentCards.map((todo, i) => (
               <>
                 <div key={todo.id} style={{cursor:"pointer", display:'flex', justifyContent:'center', alignItems:'center'}} onClick={() => handleTodoClick(todo)}>
