@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async() => {
   // console.log("response", response)
   const data = await response.data.data;
   // console.log("data", data)
-  const todos = Array.isArray(data) ? data.slice(0, 12551) as Todo[] : [];
+  const todos = Array.isArray(data) ? data.slice(0, 12532) as Todo[] : [];
   // console.log("data", data)
 
   return {

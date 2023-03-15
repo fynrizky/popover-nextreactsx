@@ -109,7 +109,7 @@ const PageMenu = ({ todos }: Props) => {
 
  
   const getPageNumbers = () => {
-    const maxPageNumbers = 3;
+    const maxPageNumbers = 4;
     const pageNumbers: number[] = [];
     let startPage = 1;
     // sama halnya dengan endPage yang diberikan type data number | undefined
@@ -122,13 +122,13 @@ const PageMenu = ({ todos }: Props) => {
       if (currentPage > middlePage) {
         startPage = currentPage - (middlePage - 1);
         endPage = currentPage + (maxPageNumbers - middlePage);
-        if (endPage > totalPages && totalPages) {
+        if (endPage > totalPages) {
           endPage = totalPages;
           startPage = totalPages - maxPageNumbers + 1;
         }
       } else {
         endPage = maxPageNumbers;
-      }
+      } 
     }
   
     for (let i = startPage; i <= endPage!; i++) {
@@ -168,6 +168,21 @@ const PageMenu = ({ todos }: Props) => {
     }
   };
 
+  const handleFirstPageClick = () => {
+    setCurrentPage(1);
+    setLazyLoad(true);
+    setTimeout(() => {
+      setLazyLoad(false);
+    }, 1000);
+  };
+  
+  const handleLastPageClick = () => {
+    setCurrentPage(totalPages!);
+    setLazyLoad(true);
+    setTimeout(() => {
+      setLazyLoad(false);
+    }, 1000);
+  };
 
   if (!todos) {
     return <div>No todos found</div>;
@@ -241,11 +256,20 @@ const PageMenu = ({ todos }: Props) => {
           </div>
           <div style={{display:'flex', paddingTop: '2px'}}>
                   {filteredData && filteredData.length > cardsPerPage && (
-                    <>
+                  <>
+                    <button
+                      className={``}
+                      style={{marginRight: '2px', padding: '6px',
+                      display: currentPage === 1 ? 'none': ''}}
+                      onClick={handleFirstPageClick}>
+                      &laquo;
+                    </button>
                     <button
                      className={``}
-                     style={{marginRight: '2px'}}
+                     style={{marginRight: '2px', 
+                            display: currentPage === 1 ? 'none': ''}}
                      onClick={handlePrevPageClick}
+                     disabled={currentPage === 1}
                    >
                      Prev
                    </button>
@@ -264,15 +288,24 @@ const PageMenu = ({ todos }: Props) => {
                         >
                           {pageNumber}
                         </button>
+                    
                       )
                     })}
                     <button
-                    className={``}
-                    style={{marginLeft: '2px'}}
-                    onClick={handleNextPageClick}
-                  >
-                    Next
-                  </button>
+                        className={``}
+                        style={{marginLeft: '2px', 
+                                display: currentPage >= totalPages! ? 'none': ''}}
+                        onClick={handleNextPageClick}
+                        disabled={currentPage >= totalPages!  }>
+                        Next
+                    </button>
+                    <button
+                      className={``}
+                      style={{marginLeft: '2px', padding: '6px',
+                      display: currentPage >= totalPages! ? 'none': ''}}
+                      onClick={handleLastPageClick}>
+                      &raquo;
+                    </button>
                   </>
                   )}
                 </div>
