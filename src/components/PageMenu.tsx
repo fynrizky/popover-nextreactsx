@@ -193,7 +193,7 @@ const PageMenu = ({ todos }: Props) => {
       <div style={{padding:"12px", filter: selectedTodo ? "blur(8px)" : ""}}>
           <h1>Yugioh Cards</h1>
       </div>
-      <form onChange={(event) => handleSearch(event)} style={{display: 'flex', margin: '14px',filter: selectedTodo ? "blur(8px)" : "",
+      <form onSubmit={(event) => handleSearch(event)} style={{display: 'flex', margin: '14px',filter: selectedTodo ? "blur(8px)" : "",
       }} className="flex my-4 w-full">
         <input type="text" id="searchTerm" 
         className='border border-grey-300 rounded bg-gray-900 text-slate-300 py-2 px-2 mr-2 flex-grow'  
@@ -201,9 +201,9 @@ const PageMenu = ({ todos }: Props) => {
         padding: '8px', marginRight:'2px', width: '100vh'}}
         placeholder="Search..." 
         autoComplete='off' />
-        {/* <button type="submit" 
+        <button type="submit" 
         className='bg-gray-500 hover:bg-gray-600 text-slate-300 font-bold py-2 px-4 rounded'
-        style={{backgroundColor: 'grey', fontSize: 'bold', padding: '4px', borderRadius: '8px'}}>Search</button> */}
+        style={{backgroundColor: 'grey', fontSize: 'bold', padding: '4px', borderRadius: '8px'}}>Search</button>
       </form>
       
     <div style={{
@@ -370,7 +370,8 @@ const PageMenu = ({ todos }: Props) => {
                     </button>
                   )}
                   {selectedTodo.card_images[selectedTodoIndex] && (
-                    <img src={selectedTodo.card_images[selectedTodoIndex].image_url} width="240px" alt="" />
+                    <img src={selectedTodo.card_images[selectedTodoIndex].image_url} 
+                    width="240px" alt="" />
                   )}
                   {selectedTodo.card_images.length > 1 && (
                     <button 
