@@ -14,6 +14,7 @@ interface Todo {
 interface cardImages {
   id: number;
   image_url: string;
+  image_url_small: string;
 }
 
 type Props = {

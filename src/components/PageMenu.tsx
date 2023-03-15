@@ -11,6 +11,7 @@ interface Todo {
 interface cardImages {
   id: number;
   image_url: string;
+  image_url_small: string;
 }
 
 interface Props {
@@ -144,7 +145,7 @@ const PageMenu = ({ todos }: Props) => {
       setLazyLoad(true);
       setTimeout(()=>{
         setLazyLoad(false);
-      },700)
+      },1000)
   }
 
   const handlePrevPageClick = () => {
@@ -153,7 +154,7 @@ const PageMenu = ({ todos }: Props) => {
       setLazyLoad(true);
       setTimeout(()=>{
         setLazyLoad(false);
-      },700)
+      },1000)
     }
   };
   
@@ -163,7 +164,7 @@ const PageMenu = ({ todos }: Props) => {
       setLazyLoad(true);
       setTimeout(()=>{
         setLazyLoad(false);
-      },700)
+      },1000)
     }
   };
 
@@ -200,17 +201,16 @@ const PageMenu = ({ todos }: Props) => {
     }}>
       {searchTerm && dataCards && filteredData && filteredData.length > 0  && (
         <>
-            
           <div style={{fontSize: '20px', fontWeight: 'bold', 
-            position:'absolute', 
-            color:'white',
-            top: "40%",
-            left: "50%",
-            transform:  `translate(-50%, -50%)`,
-            zIndex: lazyLoad ? '9999' : '-9999',
-            }}>
-              <p>Loading... </p>
-          </div>
+              position:'absolute', 
+              color:'white',
+              top: "40%",
+              left: "50%",
+              transform:  `translate(-50%, -50%)`,
+              zIndex: lazyLoad ? '9999' : '-9999',
+              }}>
+                <p>Loading... </p>
+            </div>
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(4, 1fr)", // divide into 3 columns
@@ -232,11 +232,12 @@ const PageMenu = ({ todos }: Props) => {
               <>
                 <div key={todo.id} style={{cursor:"pointer", display:'flex', justifyContent:'center', alignItems:'center'}} onClick={() => handleTodoClick(todo)}>
                   <div >
-                      <img width="70px" src={todo.card_images[0].image_url} alt="" />
+                      <img width="70px" src={todo.card_images[0].image_url_small} alt="" />
                   </div>
                 </div>  
               </>
               ))}
+              
           </div>
           <div style={{display:'flex', paddingTop: '2px'}}>
                   {filteredData && filteredData.length > cardsPerPage && (
