@@ -69,6 +69,10 @@ const PageMenu = ({ todos }: Props) => {
     // cara2
     setSearchTerm(event.currentTarget.searchTerm.value);
     setCurrentPage(1);
+    setLazyLoad(true);
+    setTimeout(() => {
+      setLazyLoad(false);
+    }, 1000);
   };
 
 
@@ -193,17 +197,17 @@ const PageMenu = ({ todos }: Props) => {
       <div style={{padding:"12px", filter: selectedTodo ? "blur(8px)" : ""}}>
           <h1>Yugioh Cards</h1>
       </div>
-      <form onSubmit={(event) => handleSearch(event)} style={{display: 'flex', margin: '14px',filter: selectedTodo ? "blur(8px)" : "",
+      <form onChange={(event) => handleSearch(event)} style={{display: 'flex', margin: '14px',filter: selectedTodo ? "blur(8px)" : "",
       }} className="flex my-4 w-full">
         <input type="text" id="searchTerm" 
         className='border border-grey-300 rounded bg-gray-900 text-slate-300 py-2 px-2 mr-2 flex-grow'  
         style={{border:'6px', borderRadius: '8px', background: 'rgb(200,200,200,0.2)', color: '#111', 
         padding: '8px', marginRight:'2px', width: '100vh'}}
-        placeholder="Search..." 
+        placeholder="Search Card..." 
         autoComplete='off' />
-        <button type="submit" 
+        {/* <button type="submit" 
         className='bg-gray-500 hover:bg-gray-600 text-slate-300 font-bold py-2 px-4 rounded'
-        style={{backgroundColor: 'grey', fontSize: 'bold', padding: '4px', borderRadius: '8px'}}>Search</button>
+        style={{backgroundColor: 'grey', fontSize: 'bold', padding: '4px', borderRadius: '8px'}}>Search</button> */}
       </form>
       
     <div style={{
@@ -219,7 +223,7 @@ const PageMenu = ({ todos }: Props) => {
           <div style={{fontSize: '20px', fontWeight: 'bold', 
               position:'absolute', 
               color:'white',
-              top: "40%",
+              top: "42%",
               left: "50%",
               transform:  `translate(-50%, -50%)`,
               zIndex: lazyLoad ? '9999' : '-9999',
@@ -239,13 +243,14 @@ const PageMenu = ({ todos }: Props) => {
             borderLeftStyle: 'ridge',
             borderTopStyle: 'none',
             overflow: "auto",
-            filter: lazyLoad && lazyLoad ? "blur(8px)" : "",
         
             }}>
           
               {currentCards && currentCards.map((todo, i) => (
               <>
-                <div key={todo.id} style={{cursor:"pointer", display:'flex', justifyContent:'center', alignItems:'center'}} onClick={() => handleTodoClick(todo)}>
+                <div key={todo.id} style={{cursor:"pointer", display:'flex', 
+                justifyContent:'center', alignItems:'center',
+                filter: lazyLoad ? "blur(8px)" : "",}} onClick={() => handleTodoClick(todo)}>
                   <div >
                       <img width="70px" src={todo.card_images[0].image_url_small} alt="" />
                   </div>
