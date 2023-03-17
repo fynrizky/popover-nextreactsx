@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageMenu from '@/components/PageMenu';
 import axios from 'axios';
 import { GetServerSideProps } from 'next';
@@ -18,28 +18,8 @@ interface cardImages {
 }
 
 type Props = {
-  todos?: Todo[] | null;
+  todos?: Todo[] | null
 }
-
-//get data s
-export const getServerSideProps: GetServerSideProps<Props> = async() => {
-  //tanda (!) berarti nilainya pasti ada
- // tanda as string berarti diasumsikan string
- // tanda ?? artinya default artinya ada atau undefined 
-  const response = await axios.get(`${process.env.YGOPRODECK_API!}`);
-  // console.log("response", response)
-  const data = await response.data.data;
-  // console.log("data", data)
-  const todos = Array.isArray(data) ? data.slice(0, 12532) as Todo[] : [];
-  // console.log("data", data)
-
-  return {
-    props: {
-      todos,
-    }
-  }
-}
-
 
 
 const Home = ({ todos }: Props) => {
@@ -56,4 +36,34 @@ const Home = ({ todos }: Props) => {
   )
 }
 
+//get data s
+export const getServerSideProps: GetServerSideProps<Props> = async() => {
+    
+  try {
+  //tanda (!) berarti nilainya pasti ada
+  // tanda as string berarti diasumsikan string
+  // tanda ?? artinya default artinya ada atau undefined 
+  const response = await axios.get(process.env.YGOPRODECK_API!);
+  // console.log("response", response)
+  const data = response.data.data;
+  // console.log("data", data)
+  const todos = Array.isArray(data) ? data.slice(0, 12532) : [];
+  // console.log("data", data)
+
+  return {
+    props: {
+      todos,
+    },
+  };
+} catch (error) {
+  return {
+    props: {
+      todos: [],
+    },
+  };
+}
+
+}
+
 export default Home;
+
